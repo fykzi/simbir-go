@@ -1,0 +1,35 @@
+version: '3'
+services:
+    db:
+        container_name: 'db'
+        image: postgres:14.2
+        restart: always
+        security_opt:
+          - seccomp:unconfined
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_DB=simbir_go
+        # network_mode: host
+        volumes:
+          - ./pgdata:/var/lib/postgresql/data
+          - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        networks: 
+          - custom
+        ports:
+          - "12001:5432"
+    core_api:
+        build: .
+        container_name: 'simbir.Go'
+        depends_on: 
+          - db
+        volumes:
+            - ./app/:/app
+        networks: 
+          - custom 
+        # network_mode: host
+        ports:
+          - "12000:55000"
+networks:
+  custom:
+    driver: bridge
