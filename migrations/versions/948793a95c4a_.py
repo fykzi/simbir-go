@@ -1,8 +1,8 @@
 """.
 
-Revision ID: 254318c75a55
+Revision ID: 948793a95c4a
 Revises: 
-Create Date: 2023-10-30 20:33:08.628671
+Create Date: 2023-10-31 06:27:58.788934
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '254318c75a55'
+revision: str = '948793a95c4a'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -42,7 +42,7 @@ def upgrade() -> None:
     sa.Column('minutePrice', sa.DOUBLE_PRECISION(), nullable=True),
     sa.Column('dayPrice', sa.DOUBLE_PRECISION(), nullable=True),
     sa.Column('owner', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['owner'], ['users.user_id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['owner'], ['users.user_id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('transport_id')
     )
     op.create_table('rents',
@@ -55,8 +55,8 @@ def upgrade() -> None:
     sa.Column('time_end', postgresql.TIME(), nullable=True),
     sa.Column('price_of_unit', sa.DOUBLE_PRECISION(), nullable=False),
     sa.Column('final_price', sa.DOUBLE_PRECISION(), nullable=True),
-    sa.ForeignKeyConstraint(['renter_id'], ['users.user_id'], ),
-    sa.ForeignKeyConstraint(['transport_id'], ['transports.transport_id'], ),
+    sa.ForeignKeyConstraint(['renter_id'], ['users.user_id'], ondelete='SET NULL'),
+    sa.ForeignKeyConstraint(['transport_id'], ['transports.transport_id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('rent_id')
     )
     # ### end Alembic commands ###
