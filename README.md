@@ -1,4 +1,6 @@
 Для запуска понадобится установить Docker и Docker-compose
+
+Linux
 1. docker-compose up
 2. python3 -m venv venv
 3. source venv/bin/activate
